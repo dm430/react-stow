@@ -1,0 +1,18 @@
+{
+  "name": "react-storage",
+  "version": "1.0.0",
+  "description": "Storage abstraction for React",
+  "main": "index.js",
+  "author": "Devin Wall",
+  "license": "GPL 3",
+  "dependencies": {
+    "react": "^17.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.56",
+    "typescript": "^4.0.5"
+  },
+  "scripts": {
+    "build": "npx tsc"
+  }
+}
