@@ -35,7 +35,9 @@ const createStorageHook = (
     useEffect(() => {
       if (storageInstance.hasKey(key)) {
         const storedValue = storageInstance.getItem(key)
-        setValue(storedValue)
+        const deserializedValue = serializer.deserialize(storedValue);
+        
+        setValue(deserializedValue)
       } else if (initialValue) {
         storageInstance.setItem(key, serializer.serialize(initialValue))
       }
