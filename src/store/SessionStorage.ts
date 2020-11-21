@@ -1,6 +1,6 @@
-import StorageBase from './StorageBase'
+import ClientStorageBase from './ClientStorageBase'
 
-class SessionStorage extends StorageBase {
+class SessionStorage extends ClientStorageBase {
     getItem(key: string): any {
         this.assureClientSideExecution()
         return window.sessionStorage.getItem(key)

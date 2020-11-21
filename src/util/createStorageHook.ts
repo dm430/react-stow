@@ -1,10 +1,8 @@
 import { useState, useEffect, useCallback } from 'react'
-import StorageBase from '../stores/StorageBase'
+import SerializedStorageDecorator from '../decorators/SerializedLocalStorage';
 import JsonSerializer from '../serialization/JsonSerializer'
-import Serializer from '../serialization/Serializer'
+import { StorageResolver, SerializerResolver } from './types';
 
-type StorageResolverCallback = () => StorageBase;
-type SerializerResolverCallback = () => Serializer
 type StorageHookReturnValues = [value: any, setValue: (newValue: any) => void, deleteKey: () => void]
 
 export interface StorageHook { 
@@ -16,10 +14,10 @@ export interface StorageHookOptions  {
 }
 
 const createStorageHook = (
-  resolveStorageInstance: StorageBase | StorageResolverCallback,
-  resolveSerializerInstance?: Serializer | SerializerResolverCallback
+  resolveStorageInstance: StorageResolver,
+  resolveSerializerInstance?: SerializerResolver
 ): StorageHook => {
-  const storageInstance =
+  const innerStorageInstance =
     typeof resolveStorageInstance === 'function'
       ? resolveStorageInstance()
       : resolveStorageInstance
@@ -29,17 +27,17 @@ const createStorageHook = (
       ? resolveSerializerInstance()
       : resolveSerializerInstance) ?? new JsonSerializer()
 
+  const storageInstance = new SerializedStorageDecorator(innerStorageInstance, serializer)
+
   const useStorage: StorageHook = (key, initialValue, options) => {
     const [value, setValue] = useState(initialValue ?? null)
 
     useEffect(() => {
       if (storageInstance.hasKey(key)) {
         const storedValue = storageInstance.getItem(key)
-        const deserializedValue = serializer.deserialize(storedValue);
-        
-        setValue(deserializedValue)
+        setValue(storedValue)
       } else if (initialValue) {
-        storageInstance.setItem(key, serializer.serialize(initialValue))
+        storageInstance.setItem(key, initialValue)
       }
     }, [key, initialValue])
 
@@ -64,7 +62,7 @@ const createStorageHook = (
     const setStorageValue = useCallback(
       (newValue: any) => {
         if (newValue !== value) {
-          storageInstance.setItem(key, serializer.serialize(newValue))
+          storageInstance.setItem(key, newValue)
           setValue(newValue)
         }
       },

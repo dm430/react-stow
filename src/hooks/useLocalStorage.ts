@@ -1,6 +1,6 @@
-import LocalStorage from '../stores/LocalStorage'
+import { localStorageInstance } from '../global/localStorage'
 import createStorageHook from '../util/createStorageHook'
 
-const useLocalStorage = createStorageHook(new LocalStorage())
+const useLocalStorage = createStorageHook(localStorageInstance)
 
 export default useLocalStorage

@@ -1,6 +1,6 @@
-import StorageBase from './StorageBase'
+import ClientStorageBase from './ClientStorageBase'
 
-class LocalStorage extends StorageBase {
+class LocalStorage extends ClientStorageBase {
     getItem(key: string): any {
         this.assureClientSideExecution()
         return window.localStorage.getItem(key)

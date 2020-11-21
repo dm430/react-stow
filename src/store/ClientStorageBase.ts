@@ -1,4 +1,6 @@
-abstract class StorageBase {
+import Storage from './Storage'
+
+abstract class ClientStorageBase implements Storage {
     abstract getItem(key: string): any
 
     abstract setItem(key: string, value: any): void
@@ -16,4 +18,4 @@ abstract class StorageBase {
     }
   }
 
-  export default StorageBase
+  export default ClientStorageBase
