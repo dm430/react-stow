@@ -1,19 +1,48 @@
-import Storage from './Storage'
+import LibraryStorage from './Storage'
 
-abstract class ClientStorageBase implements Storage {
-    abstract getItem(key: string): any
+/**
+ * A base class that provides additional functionality specific to web client storage. 
+ * All web based storage types should extend from this.
+ */
+abstract class ClientStorageBase implements LibraryStorage {
+    protected clientStorage: Storage
+    
+    constructor(clientStorage: Storage){
+        this.clientStorage = clientStorage
+    }
 
-    abstract setItem(key: string, value: any): void
+    getItem(key: string): any {
+        this.assureClientSideExecution()
+        return this.clientStorage.getItem(key)
+    }
 
-    abstract removeItem(key: string): void
+    setItem(key: string, value: any): void {
+        this.assureClientSideExecution()
+        this.clientStorage.setItem(key, value)
+    }
 
-    abstract clear(): void
+    removeItem(key: string): void {
+        this.assureClientSideExecution()
+        this.clientStorage.removeItem(key)
+    }
 
-    abstract hasKey(key: string): boolean
+    clear(): void {
+        this.assureClientSideExecution()
+        this.clientStorage.clear()
+    }
+
+    hasKey(key: string): boolean {
+       this.assureClientSideExecution()
+       return Object.prototype.hasOwnProperty.call(this.clientStorage, key)
+    }
   
+    /**
+     * Asserts that the function was run on a web client. 
+     * Otherwise an error is thrown to indicate the current execution enviorment is not supported. 
+     */
     protected assureClientSideExecution(): void {
         if (typeof window === 'undefined') {
-            throw new Error('The Web Storage API is not supported in this enviorment.')
+            throw new Error('The Web Storage API is not supported in the current execution enviorment.')
         }
     }
   }

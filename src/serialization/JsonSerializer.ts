@@ -1,5 +1,8 @@
 import Serializer from './Serializer'
 
+/**
+ * Provides JSON serialization and deserialization.
+ */
 class JsonSerializer implements Serializer {
     serialize(value: any): string {
         return JSON.stringify(value)

@@ -1,9 +1,3 @@
-import Storage from './Storage'
-import LocalStorage from './LocalStorage'
-import SessionStorage from './SessionStorage'
-
-export {
-    Storage,
-    LocalStorage,
-    SessionStorage
-}
+export { default as Storage } from './Storage'
+export { default as LocalStorage } from './LocalStorage'
+export { default as SessionStorage } from './SessionStorage'

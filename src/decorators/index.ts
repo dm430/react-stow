@@ -1,3 +1,1 @@
-import SerializedLocalStorage from './SerializedLocalStorage'
-
-export { SerializedLocalStorage }
+export { default as SerializedStorageDecorator } from './SerializedStorageDecorator'

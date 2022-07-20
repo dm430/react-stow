@@ -1,6 +1,9 @@
+/**
+ * Provides a contract for storage serialization.
+ */
 interface Serializer {
-    serialize(value: any): string
-    deserialize(value: string): any
+    serialize(value: any): any
+    deserialize(value: any): any
 }
 
 export default Serializer

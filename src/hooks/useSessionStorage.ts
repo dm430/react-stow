@@ -1,6 +1,5 @@
-import { sessionStorageInstance } from '../global/sessionStorage'
-import createStorageHook from '../util/createStorageHook'
+import createSessionStorageHook from '../util/createSessionStorageHook'
 
-const useSessionStorage = createStorageHook(sessionStorageInstance)
+const sessionStorageHook = createSessionStorageHook()
 
-export default useSessionStorage
+export default sessionStorageHook

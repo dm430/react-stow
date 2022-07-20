@@ -1,12 +1,7 @@
-import useLocalStorage from './hooks/useLocalStorage'
-import useSessionStorage from './hooks/useSessionStorage'
-
-import localStorage from './global/localStorage'
-import sessionStorage from './global/sessionStorage'
+export { default as useLocalStorage } from "./hooks/useLocalStorage";
+export { default as useSessionStorage } from "./hooks/useSessionStorage";
 
 export {
-    useLocalStorage,
-    useSessionStorage,
-    localStorage,
-    sessionStorage
-}
+  jsonLocalStorageInstance as localStorage,
+  jsonSessionStorageInstance as sessionStorage,
+} from "./global/constants";

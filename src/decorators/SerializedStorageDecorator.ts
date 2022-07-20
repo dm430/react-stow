@@ -1,12 +1,14 @@
 import { Serializer } from "../serialization";
 import { Storage } from "../store";
 
-class SerializedStorageDecorator extends Storage {
+/**
+ * Decorates a storage implmentation with the specified serializer.
+ */
+class SerializedStorageDecorator implements Storage {
     storageInstance: Storage
     serializer: Serializer
 
     constructor(storageInstacne: Storage, serializer: Serializer) {
-        super();
         this.storageInstance = storageInstacne
         this.serializer = serializer
     }
