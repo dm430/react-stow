@@ -4,17 +4,24 @@
   "description": "Storage abstraction for React",
   "main": "index.js",
   "author": "Devin Wall",
-  "license": "GPL 3",
-  "dependencies": {
+  "license": "MIT",
+  "peerDependencies": {
     "react": "^17.0.1"
   },
   "devDependencies": {
     "@testing-library/react-hooks": "^8.0.1",
     "@types/jest": "^28.1.6",
     "@types/react": "^16.9.56",
+    "@typescript-eslint/eslint-plugin": "^5.30.7",
+    "@typescript-eslint/parser": "^5.30.7",
+    "eslint": "^8.20.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-react": "^7.30.1",
     "jest": "^28.1.3",
     "jest-each": "^28.1.3",
     "jest-environment-jsdom": "^28.1.3",
+    "prettier": "^2.7.1",
+    "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "ts-jest": "^28.0.7",
     "typescript": "^4.0.5"
