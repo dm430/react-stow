@@ -1,8 +1,14 @@
+import type { Serializer } from '../serialization'
+
+import guardWindow from '../util/guardWindow'
 import ClientStorageBase from './ClientStorageBase'
 
 class SessionStorage extends ClientStorageBase {
-	constructor() {
-		super(window.sessionStorage)
+	constructor(serializer?: Serializer) {
+		super(
+			guardWindow((window) => window?.sessionStorage),
+			serializer
+		)
 	}
 }
 

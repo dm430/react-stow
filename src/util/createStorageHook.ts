@@ -1,10 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 
-import type { StorageResolver, SerializerResolver } from './types'
+import type { StorageResolver } from './types'
 import type { Storage } from '../store'
-
-import { SerializedStorageDecorator } from '../decorators'
-import { NoOpSerializer } from '../serialization'
 
 type StorageHookReturnValues<T> = [
 	value: T | null,
@@ -47,23 +44,12 @@ const storageEventName = 'storage'
  * @returns A storage hook bound to a particular storage instance and serializer.
  */
 const createStorageHook = <T extends Storage>(
-	resolveStorageInstance: StorageResolver<T>,
-	resolveSerializerInstance?: SerializerResolver
+	resolveStorageInstance: StorageResolver<T>
 ): StorageHook<T> => {
-	const innerStorageInstance =
+	const storageInstance =
 		typeof resolveStorageInstance === 'function'
 			? resolveStorageInstance()
 			: resolveStorageInstance
-
-	const serializer =
-		(typeof resolveSerializerInstance === 'function'
-			? resolveSerializerInstance()
-			: resolveSerializerInstance) ?? new NoOpSerializer()
-
-	const storageInstance = new SerializedStorageDecorator(
-		innerStorageInstance,
-		serializer
-	)
 
 	const useStorage: StorageHook<T> = <T2>(
 		key: string,
@@ -96,7 +82,7 @@ const createStorageHook = <T extends Storage>(
 			const handleStorage = (event: StorageEvent) => {
 				if (event.key === key) {
 					safeSetValue(() =>
-						event.newValue ? serializer.deserialize(event.newValue) : null
+						event.newValue ? storageInstance.getItem(key) : null
 					)
 				}
 			}

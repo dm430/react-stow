@@ -1,11 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks'
+import { useLocalStorage, useSessionStorage } from '../src/hooks'
 
-const useLocalStorage = require('../src/hooks/useLocalStorage').default
-const useSessionStorage = require('../src/hooks/useSessionStorage').default
+const key = 'test-key'
 
 describe.each([
-	['sessionStorage', useSessionStorage, window.sessionStorage],
-	['localStorage', useLocalStorage, window.localStorage]
+	['useSessionStorage', useSessionStorage, window.sessionStorage],
+	['useLocalStorage', useLocalStorage, window.localStorage]
 ])('storage: %s', (name, hook, windowStore) => {
 	afterEach(() => {
 		windowStore.clear()
@@ -25,7 +25,6 @@ describe.each([
 	})
 
 	it(`should not store the inital value in ${name} when a value is stored`, () => {
-		const key = 'test-key'
 		const expectedValue = 'this should not be overwritten'
 
 		windowStore.setItem(key, JSON.stringify(expectedValue))
@@ -41,14 +40,13 @@ describe.each([
 
 	it(`should store the inital value in ${name} when no value is stored`, () => {
 		const expectedValue = 'inital value'
-		const key = 'test-key'
 
 		renderHook(() => hook(key, expectedValue))
 		expect(windowStore.getItem(key)).toBe(`"${expectedValue}"`)
 	})
 
 	it('should update state value when the setValue function is called', () => {
-		const { result } = renderHook(() => hook('test-key'))
+		const { result } = renderHook(() => hook(key))
 		const expectdValue = 'new value'
 
 		act(() => {
@@ -59,18 +57,18 @@ describe.each([
 	})
 
 	it(`should update the ${name} value when the setValue function is called`, () => {
-		const { result } = renderHook(() => hook('test-key'))
+		const { result } = renderHook(() => hook(key))
 		const expectdValue = 'new value'
 
 		act(() => {
 			result.current[1](expectdValue)
 		})
 
-		expect(windowStore.getItem('test-key')).toBe(`"${expectdValue}"`)
+		expect(windowStore.getItem(key)).toBe(`"${expectdValue}"`)
 	})
 
 	it(`should remove key from ${name} when the remove function is called`, () => {
-		const { result } = renderHook(() => hook('test-key', 'inital value'))
+		const { result } = renderHook(() => hook(key, 'inital value'))
 
 		act(() => {
 			result.current[2]()
@@ -80,7 +78,7 @@ describe.each([
 	})
 
 	it('should be null when the remove function is called', () => {
-		const { result } = renderHook(() => hook('test-key', 'inital value'))
+		const { result } = renderHook(() => hook(key, 'inital value'))
 
 		act(() => {
 			result.current[2]()
@@ -90,8 +88,8 @@ describe.each([
 	})
 
 	it('should return previous value and error when an error occures', () => {
-		windowStore.setItem('test-key', '{ "bad": "test"')
-		const { result } = renderHook(() => hook('test-key'))
+		windowStore.setItem(key, '{ "bad": "test"')
+		const { result } = renderHook(() => hook(key))
 
 		expect(result.current[0]).toBeNull()
 		expect(result.current[3]).toBeInstanceOf(Error)
