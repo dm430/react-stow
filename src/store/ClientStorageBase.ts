@@ -1,6 +1,7 @@
 import type LibraryStorage from './Storage'
+import type { EventBus } from '../event'
+
 import { JsonSerializer, Serializer } from '../serialization'
-import EventBus from '../event/EventBus'
 
 /**
  * A base class that provides additional functionality specific to web client storage.

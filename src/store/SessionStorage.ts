@@ -1,4 +1,4 @@
-import type EventBus from '../event/EventBus'
+import type { EventBus } from '../event'
 import type { Serializer } from '../serialization'
 
 import guardWindow from '../util/guardWindow'

@@ -22,7 +22,7 @@ export default class InMemoryEventBus implements EventBus {
 		return () => {
 			eventSubscriptions.delete(nextEventListenerId)
 
-			if (this.eventListeners.get(event)?.size == 0) {
+			if (eventSubscriptions.size == 0) {
 				this.eventListeners.delete(event)
 			}
 		}

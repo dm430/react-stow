@@ -58,7 +58,7 @@ describe.each([
 
 	it(`should update the ${name} value when the setValue function is called`, () => {
 		const { result } = renderHook(() => hook(key))
-		const expectdValue = 'new value'
+		const expectdValue = 'new value store test'
 
 		act(() => {
 			result.current[1](expectdValue)
@@ -93,5 +93,41 @@ describe.each([
 
 		expect(result.current[0]).toBeNull()
 		expect(result.current[3]).toBeInstanceOf(Error)
+	})
+
+	it('should synchronize hook values', () => {
+		const initialValue = 'inital value sync'
+		const expected = 'new value synchronize'
+
+		const { result: result1 } = renderHook(() => hook(key, initialValue))
+		// const { result: result2 } = renderHook(() => hook(key, initialValue))
+
+		expect(result1.current[0]).toBe(initialValue)
+		// expect(result2.current[0]).toBe(initialValue)
+
+		act(() => {
+			result1.current[1](expected)
+		})
+
+		expect(result1.current[0]).toBe(expected)
+		// expect(result2.current[0]).toBe(expected)
+	})
+
+	it('should return the new value when the window event bus is invoked', async () => {
+		const { result } = renderHook(() => hook(key, 'inital value'))
+		const expected = 'new value from event'
+		const jsonExpected = `"${expected}"`
+
+		act(() => {
+			windowStore.setItem(key, jsonExpected)
+			window.dispatchEvent(
+				new StorageEvent('storage', {
+					key: key,
+					newValue: jsonExpected
+				})
+			)
+		})
+
+		expect(result.current[0]).toBe(expected)
 	})
 })

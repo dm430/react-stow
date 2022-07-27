@@ -1,6 +1,15 @@
 import { LocalStorage, SessionStorage } from '../store'
-import InMemoryEventBus from '../event/InMemoryEventBus'
+import { WindowEventBus } from '../event'
+import { JsonSerializer } from '../serialization'
 
-export const sessionStorageInstance = new SessionStorage()
-export const localStorageInstance = new LocalStorage()
-export const eventBusInstance = new InMemoryEventBus()
+export const serializerInsance = new JsonSerializer()
+export const eventBusInstance = new WindowEventBus()
+
+export const localStorageInstance = new LocalStorage(
+	serializerInsance,
+	eventBusInstance
+)
+export const sessionStorageInstance = new SessionStorage(
+	serializerInsance,
+	eventBusInstance
+)
