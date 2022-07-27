@@ -1,7 +1,11 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'React'
 
-import type { StorageResolver } from './types'
+import type { Resolver } from './resolve'
 import type { Storage } from '../store'
+import type { EventBus } from '../event'
+
+import { eventBusInstance } from '../global/constants'
+import resolve from './resolve'
 
 type StorageHookReturnValues<T> = [
 	value: T | null,
@@ -44,28 +48,28 @@ const storageEventName = 'storage'
  * @returns A storage hook bound to a particular storage instance and serializer.
  */
 const createStorageHook = <T extends Storage>(
-	resolveStorageInstance: StorageResolver<T>
+	resolveStorageInstance: Resolver<T>,
+	// Not super stoked about this, but I don't want it to be required in the consuming API.
+	resolveEventBusInstance: Resolver<EventBus> = eventBusInstance
 ): StorageHook<T> => {
-	const storageInstance =
-		typeof resolveStorageInstance === 'function'
-			? resolveStorageInstance()
-			: resolveStorageInstance
+	const storageInstance = resolve<T>(resolveStorageInstance)
+	const eventBusInstance = resolve<EventBus>(resolveEventBusInstance)
 
 	const useStorage: StorageHook<T> = <T2>(
 		key: string,
 		initialValue?: T2,
-		options?: StorageHookOptions
+		options: StorageHookOptions = { enableKeySubscription: true }
 	): StorageHookReturnValues<T2> => {
 		const [value, setValue] = useState(initialValue ?? null)
 		const [error, setError] = useState<Error | null>(null)
 
 		const safeSetValue = (resultFunction: (value: T2 | null) => any) => {
-			setValue((value) => {
+			setValue((previousValue) => {
 				try {
-					return resultFunction(value)
+					return resultFunction(previousValue)
 				} catch (error) {
 					setError(error as Error)
-					return value
+					return previousValue
 				}
 			})
 		}
@@ -79,20 +83,18 @@ const createStorageHook = <T extends Storage>(
 		}, [key, initialValue])
 
 		useEffect(() => {
-			const handleStorage = (event: StorageEvent) => {
-				if (event.key === key) {
-					safeSetValue(() =>
-						event.newValue ? storageInstance.getItem(key) : null
-					)
-				}
-			}
-
-			options?.enableKeySubscription &&
-				window.addEventListener(storageEventName, handleStorage)
+			const unregister =
+				options?.enableKeySubscription &&
+				eventBusInstance.register(storageEventName, (event) => {
+					if (event.key === key) {
+						safeSetValue(() =>
+							event.value ? storageInstance.getItem(key) : null
+						)
+					}
+				})
 
 			return () => {
-				options?.enableKeySubscription &&
-					window.removeEventListener(storageEventName, handleStorage)
+				unregister && unregister()
 			}
 		}, [key, value, options?.enableKeySubscription])
 

@@ -1,13 +1,15 @@
+import type { EventBus } from '../event'
 import type { Serializer } from '../serialization'
 
 import guardWindow from '../util/guardWindow'
 import ClientStorageBase from './ClientStorageBase'
 
 class SessionStorage extends ClientStorageBase {
-	constructor(serializer?: Serializer) {
+	constructor(serializer?: Serializer, eventBus?: EventBus) {
 		super(
 			guardWindow((window) => window?.sessionStorage),
-			serializer
+			serializer,
+			eventBus
 		)
 	}
 }

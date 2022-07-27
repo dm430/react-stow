@@ -3,5 +3,6 @@ export { default as useSessionStorage } from './hooks/useSessionStorage'
 
 export {
 	localStorageInstance as localStorage,
-	sessionStorageInstance as sessionStorage
+	sessionStorageInstance as sessionStorage,
+	eventBusInstance as eventBus
 } from './global/constants'
