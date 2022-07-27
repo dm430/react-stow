@@ -100,17 +100,17 @@ describe.each([
 		const expected = 'new value synchronize'
 
 		const { result: result1 } = renderHook(() => hook(key, initialValue))
-		// const { result: result2 } = renderHook(() => hook(key, initialValue))
+		const { result: result2 } = renderHook(() => hook(key, initialValue))
 
 		expect(result1.current[0]).toBe(initialValue)
-		// expect(result2.current[0]).toBe(initialValue)
+		expect(result2.current[0]).toBe(initialValue)
 
 		act(() => {
 			result1.current[1](expected)
 		})
 
 		expect(result1.current[0]).toBe(expected)
-		// expect(result2.current[0]).toBe(expected)
+		expect(result2.current[0]).toBe(expected)
 	})
 
 	it('should return the new value when the window event bus is invoked', async () => {
