@@ -1,5 +1,6 @@
 import type LibraryStorage from './Storage'
 import { JsonSerializer, Serializer } from '../serialization'
+import EventBus from '../event/EventBus'
 
 /**
  * A base class that provides additional functionality specific to web client storage.
@@ -8,13 +9,16 @@ import { JsonSerializer, Serializer } from '../serialization'
 abstract class ClientStorageBase implements LibraryStorage {
 	protected clientStorage?: Storage
 	protected serializer: Serializer
+	protected eventBus?: EventBus
 
 	constructor(
 		clientStorage?: Storage,
-		serializer: Serializer = new JsonSerializer()
+		serializer: Serializer = new JsonSerializer(),
+		eventBus?: EventBus
 	) {
 		this.clientStorage = clientStorage
 		this.serializer = serializer
+		this.eventBus = eventBus
 	}
 
 	getItem(key: string): any {
@@ -24,17 +28,23 @@ abstract class ClientStorageBase implements LibraryStorage {
 
 	setItem(key: string, value: any): void {
 		this.assureClientSideExecution()
-		this.clientStorage?.setItem(key, this.serializer?.serialize(value))
+
+		const newValue = this.serializer.serialize(value)
+
+		this.clientStorage?.setItem(key, newValue)
+		this.eventBus?.dispatch('storage', { key, value: newValue })
 	}
 
 	removeItem(key: string): void {
 		this.assureClientSideExecution()
 		this.clientStorage?.removeItem(key)
+		this.eventBus?.dispatch('storage', { key, value: null })
 	}
 
 	clear(): void {
 		this.assureClientSideExecution()
 		this.clientStorage?.clear()
+		this.eventBus?.dispatch('storage', { key: null, value: null })
 	}
 
 	hasKey(key: string): boolean {

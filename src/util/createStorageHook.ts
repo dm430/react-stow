@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react'
 
-import type { StorageResolver } from './types'
+import type { EventBusResolver, StorageResolver } from './types'
 import type { Storage } from '../store'
+import EventBus from '../event/EventBus'
 
 type StorageHookReturnValues<T> = [
 	value: T | null,
@@ -44,17 +45,23 @@ const storageEventName = 'storage'
  * @returns A storage hook bound to a particular storage instance and serializer.
  */
 const createStorageHook = <T extends Storage>(
-	resolveStorageInstance: StorageResolver<T>
+	resolveStorageInstance: StorageResolver<T>,
+	resolveEventBusInstance: EventBusResolver<EventBus>
 ): StorageHook<T> => {
 	const storageInstance =
 		typeof resolveStorageInstance === 'function'
 			? resolveStorageInstance()
 			: resolveStorageInstance
 
+	const eventBusInstance =
+		typeof resolveEventBusInstance === 'function'
+			? resolveEventBusInstance()
+			: resolveEventBusInstance
+
 	const useStorage: StorageHook<T> = <T2>(
 		key: string,
 		initialValue?: T2,
-		options?: StorageHookOptions
+		options: StorageHookOptions = { enableKeySubscription: true }
 	): StorageHookReturnValues<T2> => {
 		const [value, setValue] = useState(initialValue ?? null)
 		const [error, setError] = useState<Error | null>(null)
@@ -86,6 +93,14 @@ const createStorageHook = <T extends Storage>(
 					)
 				}
 			}
+
+			eventBusInstance.register(storageEventName, (event) => {
+				if (event.key === key) {
+					safeSetValue(() =>
+						event.value ? storageInstance.getItem(key) : null
+					)
+				}
+			})
 
 			options?.enableKeySubscription &&
 				window.addEventListener(storageEventName, handleStorage)
