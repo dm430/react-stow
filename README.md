@@ -32,6 +32,8 @@ The following APIs can be utilized to create custom hooks,change the utilzed ser
 
 By default both the `useLocalStorage` and `useSessionStorage` hooks subscribe to data changes for the key they are bound to. However, this behavior can be disabled by supplying an `options` object to the hook.
 
+> NOTE: In order for a custom store to trigger events you must utilize an `EventBus` instance, and register it with your hooks. If you do not wish to create your own event bus you can utilize the default event bus by importing `import { eventBus } from 'react-storage'`.
+
 ### Example
 
 ```
@@ -95,3 +97,5 @@ let useCombinedStorage = createStorageHook({
 	}
 })
 ```
+
+> NOTE: This example will trigger eventing since its utilizing built in stores in the custom store.
