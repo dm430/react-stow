@@ -98,3 +98,18 @@ let useCombinedStorage = createStorageHook({
 ```
 
 > Note: This example will trigger eventing since its utilizing built in stores within the custom store.
+
+
+## Event API
+
+The event API exposes ```WindowEventBus```, ```InMemoryEventBus```, and the ```EventBus``` interface. Is is located at ```react-storage/event```. 
+
+### Events
+
+Name: ```storage``` 
+
+Purpose: Used to signal a change related to ```storage``` operations. 
+
+Payload: An object containing the the storage ```key```, and the new ```value``` related to it. 
+
+E.g ```{ key: 'key-name', value: 'new value' }``` 
