@@ -4,6 +4,7 @@ import type { Resolver } from './resolve'
 import type { Storage } from '../store'
 import type { EventBus } from '../event'
 
+import { EventType } from '../event'
 import { eventBusInstance } from '../global/constants'
 import resolve from './resolve'
 
@@ -37,8 +38,6 @@ export interface StorageHook<T extends Storage> {
 export interface StorageHookOptions {
 	enableKeySubscription: boolean
 }
-
-const storageEventName = 'storage'
 
 /**
  * A utility used to create a storage hook instance.
@@ -85,7 +84,7 @@ const createStorageHook = <T extends Storage>(
 		useEffect(() => {
 			const unregister =
 				options?.enableKeySubscription &&
-				eventBusInstance.register(storageEventName, (event) => {
+				eventBusInstance.register(EventType.Storage, (event) => {
 					if (event.key === key) {
 						safeSetValue(() =>
 							event.value ? storageInstance.getItem(key) : null

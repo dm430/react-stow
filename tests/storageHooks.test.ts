@@ -113,6 +113,26 @@ describe.each([
 		expect(result2.current[0]).toBe(expected)
 	})
 
+	it('should not synchronize hook values when one hook doesnt subscribe', () => {
+		const initialValue = 'inital value sync'
+		const expected = 'new value synchronize'
+
+		const { result: result1 } = renderHook(() => hook(key, initialValue))
+		const { result: result2 } = renderHook(() =>
+			hook(key, initialValue, { enableKeySubscription: false })
+		)
+
+		expect(result1.current[0]).toBe(initialValue)
+		expect(result2.current[0]).toBe(initialValue)
+
+		act(() => {
+			result1.current[1](expected)
+		})
+
+		expect(result1.current[0]).toBe(expected)
+		expect(result2.current[0]).toBe(initialValue)
+	})
+
 	it('should return the new value when the window event bus is invoked', async () => {
 		const { result } = renderHook(() => hook(key, 'inital value'))
 		const expected = 'new value from event'
