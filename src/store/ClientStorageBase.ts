@@ -1,6 +1,7 @@
 import type LibraryStorage from './Storage'
 import type { EventBus } from '../event'
 
+import { EventType } from '../event'
 import { JsonSerializer, Serializer } from '../serialization'
 
 /**
@@ -33,19 +34,19 @@ abstract class ClientStorageBase implements LibraryStorage {
 		const newValue = this.serializer.serialize(value)
 
 		this.clientStorage?.setItem(key, newValue)
-		this.eventBus?.dispatch('storage', { key, value: newValue })
+		this.eventBus?.dispatch(EventType.Storage, { key, value: newValue })
 	}
 
 	removeItem(key: string): void {
 		this.assureClientSideExecution()
 		this.clientStorage?.removeItem(key)
-		this.eventBus?.dispatch('storage', { key, value: null })
+		this.eventBus?.dispatch(EventType.Storage, { key, value: null })
 	}
 
 	clear(): void {
 		this.assureClientSideExecution()
 		this.clientStorage?.clear()
-		this.eventBus?.dispatch('storage', { key: null, value: null })
+		this.eventBus?.dispatch(EventType.Storage, { key: null, value: null })
 	}
 
 	hasKey(key: string): boolean {

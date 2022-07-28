@@ -9,6 +9,7 @@ export const localStorageInstance = new LocalStorage(
 	serializerInsance,
 	eventBusInstance
 )
+
 export const sessionStorageInstance = new SessionStorage(
 	serializerInsance,
 	eventBusInstance
