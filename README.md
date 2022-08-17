@@ -1,6 +1,4 @@
-# react-storage
-
-A flexable and robust web storage abstraction thats easy to use.
+A fully typed, flexable, and robust web storage abstraction thats easy to use.
 
 # Basic usage
 
@@ -26,12 +24,11 @@ const Example = () => {
 
 # Advanced usage
 
-The following APIs can be utilized to create custom hooks,change the utilzed serilaization mechanism, and subscribe to data changes.
+The following APIs can be utilized to create custom hooks, change the utilzed serilaization mechanism, and manage subscriptions to data changes.
 
 ## Key subscription
 
 By default both the `useLocalStorage` and `useSessionStorage` hooks subscribe to data changes for the key they are bound to. However, this behavior can be disabled by supplying an `options` object to the hook.
-
 
 ### Example
 
@@ -46,7 +43,7 @@ const [value, setValue, deleteEntry] = useLocalStorage(
 ## Serialization
 
 React Storage provides the ability for users to supply a custom serilaizer to a storage hook.
-This can be achieved easily by using either the `createLocalStorageHook`, `createSessionStorageHook`, and `createStorageHook` utilites located in `'react-storage/util'`.
+This can be achieved easily by using either the `createLocalStorageHook`, `createSessionStorageHook`, or the `createStorageHook` utilites located in `'react-storage/util'`.
 
 ### Example
 
@@ -55,10 +52,10 @@ import { createLocalStorageHook } from 'react-storage/util'
 
 const useLocalStorage = createLocalStorageHook({
 	serialize(value: any) {
-		return value + ' (custom serialize)'
+		return btoa(value)
 	},
 	deserialize(value: string): any {
-		return value + ' (custom deserialize)'
+		return atob(value)
 	}
 })
 ```
@@ -67,7 +64,7 @@ const useLocalStorage = createLocalStorageHook({
 
 The `createStorageHook` utility can be utilized to create a storage hook that uses a custom data store.
 
-> Note: In order for a custom store to trigger events you must utilize an `EventBus` instance, and register it with your hooks. If you do not wish to create your own event bus you can utilize the default event bus by importing `import { eventBus } from 'react-storage'`. Keep in mind that this event bus subscibes to window ```storage``` events.
+> Note: In order for a custom store to trigger events you must utilize an `EventBus` instance, and register it with your hooks. If you do not wish to create your own event bus you can utilize the default event bus by importing `import { eventBus } from 'react-storage'`.
 
 ### Example
 

@@ -1,5 +1,8 @@
 import EventBus, { EventCallback } from './EventBus'
 
+/**
+ * A basic in memory event bus implementation.
+ */
 export default class InMemoryEventBus implements EventBus {
 	protected eventListeners = new Map<string, Map<number, EventCallback>>()
 

@@ -8,34 +8,43 @@ import { EventType } from '../event'
 import { eventBusInstance } from '../global/constants'
 import resolve from './resolve'
 
-type StorageHookReturnValues<T> = [
-	value: T | null,
-	setValue: (newValue: T) => void,
+export type StorageHookReturnValues<ValueType> = [
+	/** The current value for key/value pair. */
+	value: ValueType | null,
+	/** A function used to set the key/value pair. */
+	setValue: (newValue: ValueType) => void,
+	/** A function used to delete the key/value pair. */
 	deleteKey: () => void,
+	/** The last error that occurred, if one exists.  */
 	error: Error | null
 ]
 
-/**
- * A hook used to interface with a type of storage.
- *
- * @param key key for the key/value pair.
- * @param initialValue this value will be written to the store, if no key/value pair exits for the specifed key.
- * @param options used to supply additional options to the hook, such as key subscription.
- * @returns an array containing the current value, a set function, a delete function, and an error, if one occurred.
- */
 // @ts-ignore T is not used but it does denote hook type for users.
-export interface StorageHook<T extends Storage> {
-	<T2>(
+export interface StorageHook<StorageType extends Storage> {
+	/**
+	 * A hook used to interface with a type of storage.
+	 *
+	 * @typeParam ValueType - the type for the value associated with the key/value pair.
+	 *
+	 * @param key key for the key/value pair.
+	 * @param initialValue this value will be written to the store, if no key/value pair exits for the specifed key.
+	 * @param options used to supply additional options to the hook, such as key subscription.
+	 * @returns an array containing the current value, a set function, a delete function, and an error, if one occurred.
+	 */
+	<ValueType>(
 		key: string,
-		initialValue?: T2,
+		initialValue?: ValueType,
 		options?: StorageHookOptions
-	): StorageHookReturnValues<T2>
+	): StorageHookReturnValues<ValueType>
 }
 
 /**
  * An interface that defines hook options.
  */
 export interface StorageHookOptions {
+	/**
+	 * When set to true the hook will listen for all value updates broadcast on the {@link EventBus}.
+	 */
 	enableKeySubscription: boolean
 }
 
@@ -54,15 +63,15 @@ const createStorageHook = <T extends Storage>(
 	const storageInstance = resolve<T>(resolveStorageInstance)
 	const eventBusInstance = resolve<EventBus>(resolveEventBusInstance)
 
-	const useStorage: StorageHook<T> = <T2>(
+	const useStorage: StorageHook<T> = <ValueType>(
 		key: string,
-		initialValue?: T2,
+		initialValue?: ValueType,
 		options: StorageHookOptions = { enableKeySubscription: true }
-	): StorageHookReturnValues<T2> => {
+	): StorageHookReturnValues<ValueType> => {
 		const [value, setValue] = useState(initialValue ?? null)
 		const [error, setError] = useState<Error | null>(null)
 
-		const safeSetValue = (resultFunction: (value: T2 | null) => any) => {
+		const safeSetValue = (resultFunction: (value: ValueType | null) => any) => {
 			setValue((previousValue) => {
 				try {
 					return resultFunction(previousValue)
