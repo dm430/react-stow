@@ -2,7 +2,8 @@
 	"name": "react-storage",
 	"version": "1.0.0",
 	"description": "Storage abstraction for React",
-	"main": "index.js",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
 	"author": "Devin Wall",
 	"license": "MIT",
 	"peerDependencies": {

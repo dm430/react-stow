@@ -4,7 +4,7 @@ import guardWindow from '../util/guardWindow'
 import InMemoryEventBus from './InMemoryEventBus'
 
 /**
- * An {@link InMemoryEventBus} instance that also registers event listeners with window.
+ * An {@link InMemoryEventBus} instance that also registers event listeners with the window.
  */
 export default class WindowEventBus implements EventBus {
 	protected eventBus = new InMemoryEventBus()
@@ -20,8 +20,8 @@ export default class WindowEventBus implements EventBus {
 		return eventResult
 	}
 
-	dispatch<T>(event: string, arg?: T): void {
-		this.eventBus.dispatch(event, arg)
+	dispatch<T>(event: string, payload?: T): void {
+		this.eventBus.dispatch(event, payload)
 	}
 
 	/**

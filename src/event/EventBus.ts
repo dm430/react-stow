@@ -4,10 +4,12 @@ export default interface EventBus {
 	/**
 	 * Dispatches all a message to all listeners registered under the provided event name.
 	 *
+	 * @typeParam T - the type for the payload.
+	 *
 	 * @param event The name of the event.
-	 * @param arg The value to be passed to the event listener.
+	 * @param payload The value to be passed to the event listener.
 	 */
-	dispatch<T>(event: string, arg?: T): void
+	dispatch<T>(event: string, payload?: T): void
 
 	/**
 	 * Registers a listener under the provided event name.
