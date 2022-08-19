@@ -1,13 +1,16 @@
 import EventBus, { EventCallback } from './EventBus'
 
+/**
+ * A basic in memory event bus implementation.
+ */
 export default class InMemoryEventBus implements EventBus {
 	protected eventListeners = new Map<string, Map<number, EventCallback>>()
 
-	dispatch<T>(event: string, arg?: T): void {
+	dispatch<T>(event: string, payload?: T): void {
 		const eventSubscriptions = this.eventListeners.get(event)
 
 		eventSubscriptions?.forEach((listener) => {
-			listener(arg)
+			listener(payload)
 		})
 	}
 
