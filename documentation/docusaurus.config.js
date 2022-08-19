@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-	title: 'React Storage',
+	title: 'React Stow',
 	tagline: 'Fast, Flexible, Easy to use',
 	url: 'https://your-docusaurus-test-site.com',
 	baseUrl: '/',
@@ -17,7 +17,7 @@ const config = {
 	// GitHub pages deployment config.
 	// If you aren't using GitHub pages, you don't need these.
 	organizationName: 'Dm430', // Usually your GitHub org/user name.
-	projectName: 'react-storage', // Usually your repo name.
+	projectName: 'react-stow', // Usually your repo name.
 
 	// Even if you don't use internalization, you can use this field to set useful
 	// metadata like html lang. For example, if your site is Chinese, you may want
@@ -57,7 +57,7 @@ const config = {
 		/** @type {import('@docusaurus/preset-classic').ThemeConfig} */
 		({
 			navbar: {
-				title: 'React Storage',
+				title: 'React Stow',
 				logo: {
 					alt: 'React Storage Logo',
 					src: 'img/logo.png'
@@ -71,7 +71,7 @@ const config = {
 					},
 					{ to: '/blog', label: 'Blog', position: 'left' },
 					{
-						href: 'https://github.com/dm430/react-storage',
+						href: 'https://github.com/dm430/react-stow',
 						label: 'GitHub',
 						position: 'right'
 					}
@@ -94,7 +94,7 @@ const config = {
 						items: [
 							{
 								label: 'Stack Overflow',
-								href: 'https://stackoverflow.com/questions/tagged/react-storage'
+								href: 'https://stackoverflow.com/questions/tagged/react-stow'
 							}
 						]
 					},
@@ -103,7 +103,7 @@ const config = {
 						items: [
 							{
 								label: 'GitHub',
-								href: 'https://github.com/dm430/react-storage'
+								href: 'https://github.com/dm430/react-stow'
 							}
 						]
 					}

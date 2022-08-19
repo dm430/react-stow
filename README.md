@@ -4,7 +4,7 @@ A fully typed, flexable, and robust web storage abstraction thats easy to use.
 
 ```
 import React from 'react'
-import { useLocalStorage } from 'react-storage/hooks'
+import { useLocalStorage } from 'react-stow/hooks'
 
 const Example = () => {
 	const [value, setValue, deleteEntry] = useLocalStorage(
@@ -42,13 +42,13 @@ const [value, setValue, deleteEntry] = useLocalStorage(
 
 ## Serialization
 
-React Storage provides the ability for users to supply a custom serilaizer to a storage hook.
-This can be achieved easily by using either the `createLocalStorageHook`, `createSessionStorageHook`, or the `createStorageHook` utilites located in `'react-storage/util'`.
+React Stow provides the ability for users to supply a custom serilaizer to a storage hook.
+This can be achieved easily by using either the `createLocalStorageHook`, `createSessionStorageHook`, or the `createStorageHook` utilites located in `'react-stow/util'`.
 
 ### Example
 
 ```
-import { createLocalStorageHook } from 'react-storage/util'
+import { createLocalStorageHook } from 'react-stow/util'
 
 const useLocalStorage = createLocalStorageHook({
 	serialize(value: any) {
@@ -64,13 +64,13 @@ const useLocalStorage = createLocalStorageHook({
 
 The `createStorageHook` utility can be utilized to create a storage hook that uses a custom data store.
 
-> Note: In order for a custom store to trigger events you must utilize an `EventBus` instance, and register it with your hooks. If you do not wish to create your own event bus you can utilize the default event bus by importing `import { eventBus } from 'react-storage'`.
+> Note: In order for a custom store to trigger events you must utilize an `EventBus` instance, and register it with your hooks. If you do not wish to create your own event bus you can utilize the default event bus by importing `import { eventBus } from 'react-stow'`.
 
 ### Example
 
 ```
-import { localStorage, sessionStorage } from 'react-storage'
-import { createStorageHook } from 'react-storage/util'
+import { localStorage, sessionStorage } from 'react-stow'
+import { createStorageHook } from 'react-stow/util'
 
 let useCombinedStorage = createStorageHook({
 	getItem(key: string): any {

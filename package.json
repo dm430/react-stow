@@ -1,13 +1,25 @@
 {
-	"name": "react-storage",
+	"name": "react-stow",
 	"version": "1.0.0",
 	"description": "Storage abstraction for React",
-	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
+	"keywords": [
+		"react",
+		"hooks",
+		"storage",
+		"local",
+		"session",
+		"localstorage",
+		"sessionstorage"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/dm430/react-stow"
+	},
 	"author": "Devin Wall",
 	"license": "MIT",
 	"peerDependencies": {
-		"react": "^17.0.1"
+		"react": ">=16.8.0",
+		"react-dom": ">=16.8.0"
 	},
 	"devDependencies": {
 		"@testing-library/react-hooks": "^8.0.1",
@@ -29,9 +41,45 @@
 		"typescript": "^4.7.4"
 	},
 	"scripts": {
-		"build": "npx tsc",
+		"build": "tsc",
 		"test": "jest",
 		"lint": "eslint --ignore-path .gitignore --ext .js,.ts .",
 		"format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\""
+	},
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"./dist"
+	],
+	"exports": {
+		".": "./dist/index.js",
+		"./util": "./dist/util/index.js",
+		"./hooks": "./dist/hooks/index.js",
+		"./store": "./dist/store/index.js",
+		"./event": "./dist/event/index.js",
+		"./serialization": "./dist/serialization/index.js",
+		"./package.json": "./package.json"
+	},
+	"typesVersions": {
+		"*": {
+			".": [
+				"./dist/index.d.ts"
+			],
+			"util": [
+				"./dist/util/index.d.ts"
+			],
+			"hooks": [
+				"./dist/hooks/index.d.ts"
+			],
+			"store": [
+				"./dist/store/index.d.ts"
+			],
+			"event": [
+				"./dist/event/index.d.ts"
+			],
+			"serialization": [
+				"./dist/serialization/index.d.ts"
+			]
+		}
 	}
 }

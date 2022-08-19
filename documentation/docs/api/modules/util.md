@@ -134,7 +134,7 @@ A utility used to create a storage hook instance.
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
 | `resolveStorageInstance` | [`Resolver`](util.md#resolver)<`T`\> | `undefined` | A storage instance or resolver function. |
-| `resolveEventBusInstance` | [`Resolver`](util.md#resolver)<[`EventBus`](../interfaces/event.EventBus.md)\> | `eventBusInstance` | - |
+| `resolveEventBusInstance` | [`Resolver`](util.md#resolver)<[`EventBus`](../interfaces/event.EventBus.md)\> | `windowEventBusInstance` | - |
 
 #### Returns
 

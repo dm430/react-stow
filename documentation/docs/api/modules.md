@@ -1,6 +1,6 @@
 ---
 id: "modules"
-title: "react-storage"
+title: "react-stow"
 sidebar_label: "Table of contents"
 sidebar_position: 0.5
 hide_table_of_contents: true

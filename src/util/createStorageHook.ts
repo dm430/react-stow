@@ -1,11 +1,11 @@
-import { useState, useEffect, useCallback } from 'React'
+import { useState, useEffect, useCallback } from 'react'
 
 import type { Resolver } from './resolve'
 import type { Storage } from '../store'
 import type { EventBus } from '../event'
 
 import { EventType } from '../event'
-import { eventBusInstance } from '../global/constants'
+import { eventBusInstance as windowEventBusInstance } from '../global/constants'
 import resolve from './resolve'
 
 export type StorageHookReturnValues<ValueType> = [
@@ -58,7 +58,7 @@ export interface StorageHookOptions {
 const createStorageHook = <T extends Storage>(
 	resolveStorageInstance: Resolver<T>,
 	// Not super stoked about this, but I don't want it to be required in the consuming API.
-	resolveEventBusInstance: Resolver<EventBus> = eventBusInstance
+	resolveEventBusInstance: Resolver<EventBus> = windowEventBusInstance
 ): StorageHook<T> => {
 	const storageInstance = resolve<T>(resolveStorageInstance)
 	const eventBusInstance = resolve<EventBus>(resolveEventBusInstance)
